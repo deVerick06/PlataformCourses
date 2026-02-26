@@ -79,7 +79,7 @@ def login():
             return jsonify({'message': 'Unauthorized'}), 401
         
         if data.get('password') == user.password:
-            access_token = create_access_token(identity=user.id)
+            access_token = create_access_token(identity=str(user.id))
             return jsonify({
                 'message': 'Login successful!',
                 'access_token': access_token
