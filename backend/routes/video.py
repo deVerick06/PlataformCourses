@@ -2,8 +2,18 @@ from flask import Blueprint, request, jsonify
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from extensions import db
 from models import User, Course, Video
+import re
 
 video_bp = Blueprint('video', __name__)
+
+def format_url(url):
+    match = re.search(r"(?:v=|\/)([0-9A-Za-z_-]{11}).*", url)
+
+    if match:
+        video_id = match.group(1)
+        return f"https://www.youtube.com/embed/{video_id}?modelsbranding=1&rel=8"
+    
+    return url
 
 @video_bp.route('/videos/add', methods=["POST"])
 @jwt_required()
@@ -24,7 +34,8 @@ def add_video():
         return jsonify({'message': 'The course mentioned in this video does not exist.'}), 404
     
     if data['title'].strip() and data['url'].strip():
-        video = Video(title=data['title'], resume=data.get('resume', ''), url=data['url'], course_id=data['course_id'])
+        formatted_url = format_url(data['url'])
+        video = Video(title=data['title'], resume=data.get('resume', ''), url=formatted_url, course_id=data['course_id'])
         db.session.add(video)
         db.session.commit()
         return jsonify({'message': 'Video successfully added'}), 201

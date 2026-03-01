@@ -2,7 +2,7 @@ from flask import Flask
 from dotenv import load_dotenv
 import os
 from extensions import db, migrate, jwt
-
+from flask_cors import CORS
 from routes.auth import auth_bp
 from routes.category import category_bp
 from routes.course import course_bp
@@ -11,7 +11,7 @@ from routes.video import video_bp
 load_dotenv()
 
 app = Flask(__name__)
-
+CORS(app)
 app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['JWT_SECRET_KEY'] = os.environ['SECRET_KEY']

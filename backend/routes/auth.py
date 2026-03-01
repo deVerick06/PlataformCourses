@@ -1,5 +1,6 @@
 from flask import Blueprint, request, jsonify
 from flask_jwt_extended import create_access_token
+from werkzeug.security import generate_password_hash, check_password_hash
 from extensions import db
 from models import User
 
@@ -15,8 +16,10 @@ def signup():
 
         if user_exist:
             return jsonify({'message': 'User already exist'}), 400
+        
+        hashed_password = generate_password_hash(data['password'])
 
-        user = User(username=data['username'], email=data['email'], password=data['password'], role=data['role'])
+        user = User(username=data['username'], email=data['email'], password=hashed_password, role=data['role'])
         db.session.add(user)
         db.session.commit()
         return jsonify({'message': 'User sucessfully created'}), 201
@@ -33,7 +36,7 @@ def login():
         if not user:
             return jsonify({'message': 'Unauthorized'}), 401
         
-        if data.get('password') == user.password:
+        if check_password_hash(user.password, data.get('password')):
             access_token = create_access_token(identity=str(user.id))
             return jsonify({
                 'message': 'Login successful!',
