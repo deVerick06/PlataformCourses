@@ -1,6 +1,6 @@
-from flask import Blueprint, request, jsonify
-from flask_jwt_extended import jwt_required, get_jwt_identity
 from extensions import db
+from flask import Blueprint, request, jsonify
+from flask_jwt_extended import get_jwt_identity, jwt_required
 from models import User, Course, Video
 import re
 
@@ -11,7 +11,7 @@ def format_url(url):
 
     if match:
         video_id = match.group(1)
-        return f"https://www.youtube.com/embed/{video_id}?modelsbranding=1&rel=8"
+        return f"https://www.youtube.com/embed/{video_id}?modestbranding=1&rel=0"
     
     return url
 
@@ -35,6 +35,7 @@ def add_video():
     
     if data['title'].strip() and data['url'].strip():
         formatted_url = format_url(data['url'])
+
         video = Video(title=data['title'], resume=data.get('resume', ''), url=formatted_url, course_id=data['course_id'])
         db.session.add(video)
         db.session.commit()
@@ -100,3 +101,19 @@ def delete_video(video_id):
     db.session.delete(video)
     db.session.commit()
     return jsonify({'message': 'Video successfully deleted'}), 200
+
+@video_bp.route('/videos/<int:video_id>', methods=["GET"])
+@jwt_required()
+def view_video(video_id):
+    video = db.session.get(Video, video_id)
+
+    if not video:
+        return jsonify({'message': 'Video not found'}), 404
+    
+    return jsonify({
+        'id': video.id,
+        'title': video.title,
+        'url': video.url,
+        'resume': video.resume,
+        'course_id': video.course_id
+    }), 200

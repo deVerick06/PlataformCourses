@@ -1,6 +1,6 @@
-from flask import Blueprint, request, jsonify
-from flask_jwt_extended import jwt_required, get_jwt_identity
 from extensions import db
+from flask import Blueprint, request, jsonify
+from flask_jwt_extended import get_jwt_identity, jwt_required
 from models import Category, User, Course
 
 course_bp = Blueprint('course', __name__)
@@ -62,6 +62,7 @@ def get_details_course(course_id):
     list_videos = []
     for video in course.videos:
         list_videos.append({
+            'id': video.id,
             'title': video.title,
             'url': video.url,
             'resume': video.resume

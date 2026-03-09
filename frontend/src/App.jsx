@@ -1,17 +1,61 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
+import Login from './components/Login'
+import Home from './components/Home'
+import CourseDetails from './components/CourseDetail'
+import VideoPlayer from './components/VideoPlayer'
+import CreateCourse from './components/CreateCourse'
+import './index.css'
+
+function ProtectedRoute({ children }) {
+  const token = localStorage.getItem("token")
+
+  if (!token) {
+    return <Navigate to="/login" />;
+  }
+
+  return children;
+}
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-      <div>
-        <h1>Welcome to the Plataform Courses</h1>
-      </div>
-    </>
+    <BrowserRouter>
+      <Routes>
+        <Route path='/' element={<Navigate to='/login' />} />
+        <Route path='/login' element={<Login />} />
+        <Route 
+          path='/home' 
+          element={
+            <ProtectedRoute>
+              <Home />
+            </ProtectedRoute>
+          }
+        />
+        <Route 
+          path='/courses/:id'
+          element={
+            <ProtectedRoute>
+              <CourseDetails />
+            </ProtectedRoute>
+          }
+        />
+        <Route 
+          path='/assistir/:video_id'
+          element={
+            <ProtectedRoute>
+              <VideoPlayer />
+            </ProtectedRoute>
+          }
+        />
+        <Route 
+          path='/courses/add'
+          element={
+            <ProtectedRoute>
+              <CreateCourse />
+            </ProtectedRoute>
+          }
+        />
+      </Routes>
+    </BrowserRouter>
   )
 }
 
