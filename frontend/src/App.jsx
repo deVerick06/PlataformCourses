@@ -1,9 +1,10 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import Login from './components/Login'
 import Home from './components/Home'
-import CourseDetails from './components/CourseDetail'
+import CourseDetails from './components/CourseDetails'
 import VideoPlayer from './components/VideoPlayer'
 import CreateCourse from './components/CreateCourse'
+import Signup from './components/Signup'
 import './index.css'
 
 function ProtectedRoute({ children }) {
@@ -21,6 +22,7 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path='/' element={<Navigate to='/login' />} />
+        <Route path='/signup' element={<Signup />} />
         <Route path='/login' element={<Login />} />
         <Route 
           path='/home' 

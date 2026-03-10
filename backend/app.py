@@ -16,8 +16,8 @@ app = Flask(__name__)
 
 CORS(app)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///plataform.db'
-app.config['JWT_SECRET_KEY'] = os.environ['SECRET_KEY_JWT']
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
+app.config['JWT_SECRET_KEY'] = os.environ['SECRET_KEY']
 
 db.init_app(app)
 jwt.init_app(app)
@@ -33,7 +33,4 @@ def initial():
     print('Welcome the Dev Pereira Courses')
 
 if __name__ == '__main__':
-    with app.app_context():
-        db.create_all()
-
     app.run(debug=True)
