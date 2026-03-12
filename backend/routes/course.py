@@ -59,6 +59,17 @@ def get_details_course(course_id):
     if not course:
         return jsonify({'message': 'Course not found'}), 404
     
+    current_user = get_jwt_identity()
+    user = db.session.get(User, current_user)
+
+    query = db.select(Enrollment).where((Enrollment.user_id == user.id) & (Enrollment.course_id == course_id))
+    enroll = db.session.execute(query).scalar()
+
+    if enroll:
+        is_enrolled = True
+    else:
+        is_enrolled = False
+    
     list_videos = []
     for video in course.videos:
         list_videos.append({
@@ -74,7 +85,8 @@ def get_details_course(course_id):
         'description': course.description,
         'videos': list_videos,
         'teacher': course.teacher.username,
-        'category': course.category.name
+        'category': course.category.name,
+        'is_enrolled': is_enrolled
     }), 200
 
 @course_bp.route('/courses/<int:course_id>/update', methods=["PUT"])

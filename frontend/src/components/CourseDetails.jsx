@@ -34,6 +34,14 @@ function CourseDetails() {
         getDetailsCourse();
     }, []);
 
+    async function handleEnroll(e) {
+        e.preventDefault()
+        
+        const response = await fetch(`http://127.0.0.1:5000/courses/${id}/enroll`, {
+            
+        })
+    } 
+
     function goToPage(video_id) {
         navigate(`/assistir/${video_id}`)
     }
@@ -73,7 +81,7 @@ function CourseDetails() {
                         ))}
                     </div>
                 )}
-                <button>Iniciar Curso</button>
+                {!course.is_enrolled && (<button>Matricular-se</button>)}
             </div>
         </>
     )
