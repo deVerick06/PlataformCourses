@@ -1,7 +1,7 @@
 from extensions import db
 from flask import Blueprint, request, jsonify
 from flask_jwt_extended import get_jwt_identity, jwt_required
-from models import Category, User, Course
+from models import Category, User, Course, Enrollment
 
 course_bp = Blueprint('course', __name__)
 
@@ -137,3 +137,20 @@ def delete_course(course_id):
     db.session.delete(course)
     db.session.commit()
     return jsonify({'message': 'Course successfully deleted'}), 200
+
+@course_bp.route('/courses/<int:course_id>/enroll', methods=["POST"])
+@jwt_required()
+def enroll_course(course_id):
+    current_user = get_jwt_identity()
+    user = db.session.get(User, current_user)
+    
+    query = db.select(Enrollment).where((Enrollment.user_id == user.id) & (Enrollment.course_id == course_id))
+    enroll_exist = db.session.execute(query).scalar()
+
+    if enroll_exist:
+        return jsonify({'message': 'User already enrolled'}), 400
+    
+    enrollment = Enrollment(user_id=user.id, course_id=course_id)
+    db.session.add(enrollment)
+    db.session.commit()
+    return jsonify({'message': 'Enrollment completed'}), 201

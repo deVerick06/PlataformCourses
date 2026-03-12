@@ -8,12 +8,11 @@ function CourseDetails() {
     console.log(id)
 
     const navigate = useNavigate()
+    const role = localStorage.getItem("role")
 
     useEffect(() => {
         async function getDetailsCourse() {
             const token = localStorage.getItem("token");
-
-            const role = localStorage.getItem("role")
 
             const response = await fetch(`http://127.0.0.1:5000/courses/${id}`, {
                 method: "GET",

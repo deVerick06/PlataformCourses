@@ -29,3 +29,11 @@ class Video(db.Model):
     resume = db.Column(db.Text, nullable=True)
     url = db.Column(db.Text, nullable=False, unique=True)
     course_id = db.Column(db.Integer, db.ForeignKey('course.id'), nullable=False)
+
+class Enrollment(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    course_id = db.Column(db.Integer, db.ForeignKey('course.id'), nullable=False)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    user = db.relationship('User', backref='enrollments')
+    course = db.relationship('Course', backref='enrollments')
