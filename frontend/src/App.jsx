@@ -5,6 +5,7 @@ import CourseDetails from './components/CourseDetails'
 import VideoPlayer from './components/VideoPlayer'
 import CreateCourse from './components/CreateCourse'
 import Signup from './components/Signup'
+import AddVideo from './components/AddVideo'
 import './index.css'
 
 function ProtectedRoute({ children }) {
@@ -37,6 +38,14 @@ function App() {
           element={
             <ProtectedRoute>
               <CourseDetails />
+            </ProtectedRoute>
+          }
+        />
+        <Route 
+          path='/courses/:id/add-video'
+          element={
+            <ProtectedRoute>
+              <AddVideo />
             </ProtectedRoute>
           }
         />

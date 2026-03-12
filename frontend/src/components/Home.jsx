@@ -6,6 +6,8 @@ function Home(){
 
     const navigate = useNavigate();
 
+    const role = localStorage.getItem("role")
+
     useEffect(() => {
         async function getCourses() {
             const token = localStorage.getItem("token");
@@ -28,9 +30,14 @@ function Home(){
         navigate(`/courses/${course_id}`)
     }
 
+    function goToAddCourse() {
+        navigate("/courses/add")
+    }
+
     return (
         <>
             <h1>Vitrini de Curso</h1>
+            {role === 'admin' && (<button onClick={() => goToAddCourse()}>Adicionar Curso</button>)}
             {courses.length === 0 ? (
                 <p>Nenhum curso cadastrado ainda.</p>
             ) : (

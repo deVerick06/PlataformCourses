@@ -13,12 +13,21 @@ function CourseDetails() {
         async function getDetailsCourse() {
             const token = localStorage.getItem("token");
 
+            const role = localStorage.getItem("role")
+
             const response = await fetch(`http://127.0.0.1:5000/courses/${id}`, {
                 method: "GET",
                 headers: {
                     "Authorization": `Bearer ${token}`
                 }
             });
+
+            if (response.status === 401) {
+                localStorage.removeItem("token");
+                navigate("/login")
+                return
+            }
+
             const data = await response.json();
             setCourse(data);
             console.log(data); //DEBUG
@@ -30,7 +39,7 @@ function CourseDetails() {
         navigate(`/assistir/${video_id}`)
     }
 
-    if (course == null) {
+    if (course === null) {
         return (
             <h2>Carregando detalhes do curso...</h2>
         )
@@ -41,6 +50,7 @@ function CourseDetails() {
             <h1>Detalhes do Curso</h1>
             <div>
                 <h3>{course.title}</h3>
+                {role === 'admin' && (<button onClick={() => navigate(`/courses/${id}/add-video`)}>Adicionar Aula</button>)}
                 {course.description == '' ? (
                     <p>Sem descrição...</p>
                 ) : (

@@ -1,0 +1,69 @@
+import { useParams, useNavigate } from "react-router-dom";
+import { useState } from "react";
+
+function AddVideo() {
+    const [ title, setTitle ] = useState('');
+    const [ resume, setResume ] = useState('');
+    const [ url, setUrl ] = useState('');
+    const [ error, setError ] = useState(null);
+    const { id } = useParams();
+
+    const navigate = useNavigate()
+
+    async function handleSubmit(e) {
+        e.preventDefault();
+
+        const token = localStorage.getItem("token");
+
+        const response = await fetch('http://127.0.0.1:5000/videos/add', {
+            method: "POST",
+            headers: {
+                "Authorization": `Bearer ${token}`,
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                title: title,
+                resume: resume,
+                url: url,
+                course_id: Number(id)
+            })
+        });
+
+        if (response.status === 401) {
+            localStorage.removeItem("token");
+            console.log("Token expired");
+            navigate("/login");
+            return
+        } else if (response.status === 403) {
+            alert("Somente administradores podem adicionar videos");
+            navigate("/home");
+            return
+        }
+
+        const data = await response.json();
+
+        if (response.ok) {
+            console.log("Video added")
+            navigate(`/courses/${id}`)
+            return
+        } else {
+            setError(data.message)
+        }
+    }
+
+    return (
+        <>
+            <h2>Adicione um Video</h2>
+            <form onSubmit={handleSubmit}>
+                <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} required />
+                <textarea value={resume} onChange={(e) => setResume(e.target.value)}></textarea>
+                <input type="text" value={url} onChange={(e) => setUrl(e.target.value)} required />
+
+                {error && <p style={{ color: 'red' }}>{error}</p>}
+                <button type="submit">Adicionar</button>
+            </form>
+        </>
+    )
+}
+
+export default AddVideo

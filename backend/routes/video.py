@@ -73,7 +73,7 @@ def update_video(video_id):
         if not data['url'].strip():
             return jsonify({'message': 'Url cannot be empty'}), 400
         
-        video.url = data['url']
+        video.url = format_url(data['url'])
     
     if 'course_id' in data:
         course = db.session.get(Course, data['course_id'])

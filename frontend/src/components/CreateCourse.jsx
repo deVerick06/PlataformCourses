@@ -114,7 +114,7 @@ function CreateCourse() {
                     </select>
                 ) : (
                     <select value={category_id} onChange={(e) => setCategory_ID(e.target.value)} required>
-                        <option value="" disabled>Selecione um Professor...</option>
+                        <option value="" disabled>Selecione um Categoria...</option>
                         {categories.map((category) => (
                             <option value={category.id}>{category.name}</option>
                         ))}

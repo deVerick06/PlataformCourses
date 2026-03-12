@@ -10,7 +10,10 @@ auth_bp = Blueprint('auth', __name__)
 def signup():
     data = request.json
 
-    if data.get('username') and data.get('email') and data.get('password') and data.get('role', 'aluno'):
+    if data.get('username') and data.get('email') and data.get('password'):
+        if not data['username'].strip() or not data['email'] or not data['password'].strip():
+            return jsonify({'message': 'Invalid data'}), 400
+        
         query = db.select(User).where(User.email == data.get('email'))
         user_exist = db.session.execute(query).scalar()
 
@@ -19,7 +22,7 @@ def signup():
         
         hashed_password = generate_password_hash(data['password'])
 
-        user = User(username=data['username'], email=data['email'], password=hashed_password, role=data['role'])
+        user = User(username=data['username'], email=data['email'], password=hashed_password)
         db.session.add(user)
         db.session.commit()
         return jsonify({'message': 'User sucessfully created'}), 201
@@ -44,7 +47,8 @@ def login():
             access_token = create_access_token(identity=str(user.id))
             return jsonify({
                 'message': 'Login successful!',
-                'access_token': access_token
+                'access_token': access_token,
+                'role': user.role
             }), 200
         
     return jsonify({'message': 'Unauthorized'}), 401
