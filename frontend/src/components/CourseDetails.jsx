@@ -9,38 +9,76 @@ function CourseDetails() {
 
     const navigate = useNavigate()
     const role = localStorage.getItem("role")
+    const plan_type = localStorage.getItem("plan_type")
+
+    async function getDetailsCourse() {
+        const token = localStorage.getItem("token");
+
+        const response = await fetch(`http://127.0.0.1:5000/courses/${id}`, {
+            method: "GET",
+            headers: {
+                "Authorization": `Bearer ${token}`
+            }
+        });
+
+        if (response.status === 401) {
+            localStorage.removeItem("token");
+            navigate("/login")
+            return
+        }
+
+        const data = await response.json();
+        setCourse(data);
+        console.log(data); //DEBUG
+    }
 
     useEffect(() => {
-        async function getDetailsCourse() {
-            const token = localStorage.getItem("token");
-
-            const response = await fetch(`http://127.0.0.1:5000/courses/${id}`, {
-                method: "GET",
-                headers: {
-                    "Authorization": `Bearer ${token}`
-                }
-            });
-
-            if (response.status === 401) {
-                localStorage.removeItem("token");
-                navigate("/login")
-                return
-            }
-
-            const data = await response.json();
-            setCourse(data);
-            console.log(data); //DEBUG
-        }
         getDetailsCourse();
     }, []);
 
     async function handleEnroll(e) {
         e.preventDefault()
+
+        const token = localStorage.getItem("token")
         
         const response = await fetch(`http://127.0.0.1:5000/courses/${id}/enroll`, {
-            
+            method: "POST",
+            headers: {
+                "Authorization": `Bearer ${token}`
+            }
         })
+
+        if (response.status === 401) {
+            localStorage.removeItem("token");
+            navigate("/login");
+            return
+        }
+
+        if (response.ok) {
+            getDetailsCourse()
+        }
     } 
+
+    function renderEnrollButton() {
+        if (course.is_enrolled === true) {
+            return null
+        }
+
+        if (course.is_premium === true && plan_type !== 'premium') {
+            return (
+                <>
+                    <p style={{ color: 'goldenrod' }}>Assine o Premium para acessar:</p>
+                    <button onClick={() => navigate("/plans")}></button>
+                </>
+            )
+        }
+
+        return (
+            <>
+                <button onClick={() => handleEnroll()}>Matricular-se</button>
+            </>
+        )
+    }
 
     function goToPage(video_id) {
         navigate(`/assistir/${video_id}`)
@@ -81,7 +119,7 @@ function CourseDetails() {
                         ))}
                     </div>
                 )}
-                {!course.is_enrolled && (<button>Matricular-se</button>)}
+                {renderEnrollButton()}
             </div>
         </>
     )

@@ -8,6 +8,7 @@ class User(db.Model):
     password = db.Column(db.String(255), nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     role = db.Column(db.String(5), default='aluno')
+    plan_type = db.Column(db.String(20), default='free')
 
 class Category(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -22,6 +23,7 @@ class Course(db.Model):
     teacher = db.relationship('User', backref='created_courses')
     category_id = db.Column(db.Integer, db.ForeignKey('category.id'), nullable=False)
     videos = db.relationship('Video', backref='course', cascade='all, delete-orphan')
+    is_premium = db.Column(db.Boolean, default=False)
 
 class Video(db.Model):
     id = db.Column(db.Integer, primary_key=True)

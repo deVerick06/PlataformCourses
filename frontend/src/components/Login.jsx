@@ -23,7 +23,8 @@ function Login(){
 
         if (response.ok) {
             localStorage.setItem("token", data.access_token);
-            localStorage.setItem("role", data.role)
+            localStorage.setItem("role", data.role);
+            localStorage.setItem("plan_type", data.plan_type);
             navigate("/home");
         } else {
             alert("Erro: "+ data.message);

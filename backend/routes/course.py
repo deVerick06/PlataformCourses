@@ -86,7 +86,8 @@ def get_details_course(course_id):
         'videos': list_videos,
         'teacher': course.teacher.username,
         'category': course.category.name,
-        'is_enrolled': is_enrolled
+        'is_enrolled': is_enrolled,
+        'is_premium': course.is_premium
     }), 200
 
 @course_bp.route('/courses/<int:course_id>/update', methods=["PUT"])
@@ -161,6 +162,14 @@ def enroll_course(course_id):
 
     if enroll_exist:
         return jsonify({'message': 'User already enrolled'}), 400
+    
+    course = db.session.get(Course, course_id)
+
+    if not course:
+        return jsonify({'message': 'Course not found'}), 404
+
+    if course.is_premium == True and user.plan_type != 'premium':
+        return jsonify({'message': 'For subscribers only'}), 403
     
     enrollment = Enrollment(user_id=user.id, course_id=course_id)
     db.session.add(enrollment)

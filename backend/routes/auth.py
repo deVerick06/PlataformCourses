@@ -48,7 +48,8 @@ def login():
             return jsonify({
                 'message': 'Login successful!',
                 'access_token': access_token,
-                'role': user.role
+                'role': user.role,
+                'plan_type': user.plan_type
             }), 200
         
     return jsonify({'message': 'Unauthorized'}), 401
