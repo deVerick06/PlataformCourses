@@ -1,6 +1,6 @@
 from extensions import db
 from flask import Blueprint, request, jsonify
-from flask_jwt_extended import create_access_token, jwt_required
+from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 from werkzeug.security import generate_password_hash, check_password_hash
 from models import User
 
@@ -70,3 +70,17 @@ def get_teachers():
         }
         teacher_list.append(content_data)
     return jsonify(teacher_list), 200
+
+@auth_bp.route('/users/upgrade_plan', methods=["PUT"])
+@jwt_required()
+def upgrade_plan():
+    plan = request.json
+    currentUser = get_jwt_identity()
+    user = db.session.get(User, currentUser)
+
+    if not user:
+        return jsonify({'message': 'User not found'}), 404
+    
+    user.plan_type = plan['plan_value']
+    db.session.commit()
+    return jsonify({'message': 'Updated plan'}), 200

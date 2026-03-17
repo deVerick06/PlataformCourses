@@ -6,6 +6,9 @@ import VideoPlayer from './components/VideoPlayer'
 import CreateCourse from './components/CreateCourse'
 import Signup from './components/Signup'
 import AddVideo from './components/AddVideo'
+import Plans from './components/Plans'
+import Dashboard from './components/Dashboard'
+import Navbar from './components/Navbar'
 import './index.css'
 
 function ProtectedRoute({ children }) {
@@ -29,7 +32,9 @@ function App() {
           path='/home' 
           element={
             <ProtectedRoute>
+              <Navbar>
               <Home />
+              </Navbar>
             </ProtectedRoute>
           }
         />
@@ -37,7 +42,9 @@ function App() {
           path='/courses/:id'
           element={
             <ProtectedRoute>
+              <Navbar>
               <CourseDetails />
+              </Navbar>
             </ProtectedRoute>
           }
         />
@@ -45,7 +52,29 @@ function App() {
           path='/courses/:id/add-video'
           element={
             <ProtectedRoute>
+              <Navbar>
               <AddVideo />
+              </Navbar>
+            </ProtectedRoute>
+          }
+        />
+        <Route 
+          path='/plans'
+          element={
+            <ProtectedRoute>
+              <Navbar>
+              <Plans />
+              </Navbar>
+            </ProtectedRoute>
+          }
+        />
+        <Route 
+          path='/my-dashboard'
+          element={
+            <ProtectedRoute>
+              <Navbar>
+              <Dashboard />
+              </Navbar>
             </ProtectedRoute>
           }
         />
@@ -53,7 +82,9 @@ function App() {
           path='/assistir/:video_id'
           element={
             <ProtectedRoute>
+              <Navbar>
               <VideoPlayer />
+              </Navbar>
             </ProtectedRoute>
           }
         />
@@ -61,7 +92,9 @@ function App() {
           path='/courses/add'
           element={
             <ProtectedRoute>
+              <Navbar>
               <CreateCourse />
+              </Navbar>
             </ProtectedRoute>
           }
         />

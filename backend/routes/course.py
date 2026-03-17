@@ -175,3 +175,23 @@ def enroll_course(course_id):
     db.session.add(enrollment)
     db.session.commit()
     return jsonify({'message': 'Enrollment completed'}), 201
+
+@course_bp.route('/my-courses', methods=["GET"])
+@jwt_required()
+def get_myCourses():
+    currentUser = get_jwt_identity()
+    user = db.session.get(User, currentUser)
+
+    if not user:
+        return jsonify({'message': 'User not found'}), 404
+    
+    list_enrollments = []
+    for enrollment in user.enrollments:
+        content_data = {
+            'id': enrollment.id,
+            'course_id': enrollment.course_id,
+            'title': enrollment.course.title,
+            'category': enrollment.course.category.name
+        }
+        list_enrollments.append(content_data)
+    return jsonify(list_enrollments)
