@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import styles from "./CourseDetails.module.css";
 
 function CourseDetails() {
     const { id } = useParams();
@@ -68,14 +69,14 @@ function CourseDetails() {
             return (
                 <>
                     <p style={{ color: 'goldenrod' }}>Assine o Premium para acessar:</p>
-                    <button onClick={() => navigate("/plans")}></button>
+                    <button className={styles.enrollBtn} onClick={() => navigate("/plans")}></button>
                 </>
             )
         }
 
         return (
             <>
-                <button onClick={() => handleEnroll()}>Matricular-se</button>
+                <button className={styles.enrollBtn} onClick={() => handleEnroll()}>Matricular-se</button>
             </>
         )
     }
@@ -91,37 +92,41 @@ function CourseDetails() {
     }
 
     return (
-        <>
-            <h1>Detalhes do Curso</h1>
-            <div>
-                <h3>{course.title}</h3>
-                {role === 'admin' && (<button onClick={() => navigate(`/courses/${id}/add-video`)}>Adicionar Aula</button>)}
-                {course.description == '' ? (
-                    <p>Sem descrição...</p>
-                ) : (
-                    <p>{course.description}</p>
-                )}
-                {course.videos.length === 0 ? (
-                    <p>Nenhum video foi adicionado ainda...</p>
-                ) : (
-                    <div style={{ display: 'grid', gap: '2px' }}>
-                        {course.videos.map((video) => (
-                            <div key={video.id} style={{ border: '1px solid #000000ff', padding: '5px' }}>
-                                <h3>{video.title}</h3>
-                                {video.resume == null ? (
-                                    <p>Esse video não possui um resumo...</p>
-                                ) : (
-                                    <p>{video.resume}</p>
-                                )}
-                                <a href="#">{video.url}</a>
-                                <button onClick={() => goToPage(video.id)}>Assistir aula</button>
-                            </div>
-                        ))}
-                    </div>
-                )}
-                {renderEnrollButton()}
+        <div className={styles.container}>
+            <div className={styles.layoutGrid}>
+                <div className={styles.mainContent}>
+                    <h1>{course.title}</h1>
+                    {role === 'admin' && (<button onClick={() => navigate(`/courses/${id}/add-video`)} style={{ width: '150px' }} >Adicionar Aula</button>)}
+                    {course.description == '' ? (
+                        <p className={styles.description}>Sem descrição...</p>
+                    ) : (
+                        <p className={styles.description}>{course.description}</p>
+                    )}
+                    {course.videos.length === 0 ? (
+                        <p>Nenhum video foi adicionado ainda...</p>
+                    ) : (
+                        <div className={styles.videoList}>
+                            {course.videos.map((video) => (
+                                <div key={video.id} className={styles.videoCard}>
+                                    <div>
+                                        <h3 className={styles.videoTitle}>{video.title}</h3>
+                                        {video.resume == null ? (
+                                            <p style={{ color: 'gray', fontSize: '14px' }}>Sem resumo...</p>
+                                        ) : (
+                                            <p style={{ color: 'gray', fontSize: '14px' }}>{video.resume}</p>
+                                        )}
+                                    </div>
+                                    <button className={styles.watchBtn} onClick={() => goToPage(video.id)}>Assistir aula</button>
+                                </div>
+                            ))}
+                        </div>
+                    )}
+                </div>
+                <div className={styles.sidebar}>
+                    {renderEnrollButton()}
+                </div>
             </div>
-        </>
+        </div>
     )
 }
 

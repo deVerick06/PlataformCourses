@@ -1,0 +1,104 @@
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 20px;
+    color: #e0e0e0;
+}
+
+.layoutGrid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 40px;
+    align-items: start;
+}
+
+.mainContent {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.title {
+    font-size: 36px;
+    font-weight: 800;
+    color: #ffffff;
+}
+
+.description {
+    font-size: 18px;
+    line-height: 1.6;
+    color: #b3b3b3;
+}
+
+.videoList {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.videoCard {
+    background-color: #252525;
+    border: 1px solid #3a3a3a;
+    border-radius: 8px;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.videoTitle {
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.watchBtn {
+    background-color: transparent;
+    border: 1px solid #007bff;
+    color: #007bff;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.2s;
+}
+
+.watchBtn:hover {
+    background-color: #007bff;
+    color: #ffffff;
+}
+
+.sidebar {
+    position: sticky;
+    top: 40px; 
+    
+    background-color: #1f1f1f;
+    border: 1px solid #333;
+    border-radius: 12px;
+    padding: 30px;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+
+.enrollBtn {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 15px 20px;
+    font-size: 18px;
+    font-weight: bold;
+    border-radius: 8px;
+    width: 100%;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.enrollBtn:hover {
+    background-color: #218838;
+}
+
+.enrollBtn:disabled {
+    background-color: #444;
+    color: #888;
+    cursor: not-allowed;
+}

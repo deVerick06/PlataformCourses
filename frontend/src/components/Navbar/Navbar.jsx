@@ -1,10 +1,11 @@
 import { Link, useNavigate } from "react-router-dom";
+import styles from "./Navbar.module.css"
 
-function Navbar() {
+function Navbar({ children }) {
     const token = localStorage.getItem("token");
     const navigate = useNavigate();
 
-    function logout({ children }) {
+    function logout() {
         localStorage.clear();
         navigate("/login");
         return
@@ -12,19 +13,19 @@ function Navbar() {
 
     return (
         <>
-            <nav style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid #414141', padding: '14px 40px' }}>
-                <div style={{ fontSize: '18px', fontWeight: '600' }} >Logo</div>
+            <nav className={styles.navbar}>
+                <div className={styles.logo}>Logo</div>
 
-                <div style={{ display: 'flex', gap: '24px' }}>
+                <div className={styles.navLinks}>
                     <Link to="/home">Home</Link>
                     <Link to="/my-dashboard">Dashboard</Link>
                     <Link to="/plans">Planos</Link>
                 </div>
 
-                <div>Perfil <button onClick={() => logout()}>Logout</button></div>
+                <div className={styles.profileArea}>Perfil <button className={styles.logoutBtn} onClick={() => logout()}>Logout</button></div>
             </nav>
 
-            <main style={{ padding: '20px' }}>
+            <main className={styles.mainContent}>
                 {children}
             </main>
         </>
