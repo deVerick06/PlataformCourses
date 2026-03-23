@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
+import styles from "./Signup.module.css"
 
 function Signup() {
     const [ username, setUsername ] = useState('')
@@ -37,38 +38,56 @@ function Signup() {
     }
 
     return (
-        <>
-            <h1>Tela de Cadastro</h1>
-            <form onSubmit={handleSubmit}>
-                <label htmlFor="">Username:</label>
-                <input 
-                    type="text"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                />
-                <label htmlFor="">Email:</label>
-                <input 
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                />
-                <label htmlFor="">Password:</label>
-                <input 
-                    type="password" 
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)} 
-                />
-                <label htmlFor="">Confirm Password:</label>
-                <input 
-                    type="password" 
-                    value={confirmPassword}
-                    onChange={(e) => setConfirmPassword(e.target.value)} 
-                />
+        <div className={styles.pageContainer}>
+            <div className={styles.signupCard}>
+                <h1 className={styles.title}>Tela de Cadastro</h1>
+                <form className={styles.form} onSubmit={handleSubmit}>
+                    <label className={styles.label} htmlFor="username">Username:</label>
+                    <input 
+                        id="username"
+                        className={styles.input}
+                        type="text"
+                        value={username}
+                        placeholder="Como quer ser chamado?"
+                        onChange={(e) => setUsername(e.target.value)}
+                    />
+                    <label className={styles.label} htmlFor="email">Email:</label>
+                    <input 
+                        id="email"
+                        type="email"
+                        className={styles.input}
+                        value={email}
+                        placeholder="seu@email.com"
+                        onChange={(e) => setEmail(e.target.value)}
+                    />
+                    <label className={styles.label} htmlFor="password">Password:</label>
+                    <input 
+                        id="password"
+                        type="password" 
+                        className={styles.input}
+                        value={password}
+                        placeholder="********"
+                        onChange={(e) => setPassword(e.target.value)} 
+                    />
+                    <label className={styles.label} htmlFor="confirmPassword">Confirm Password:</label>
+                    <input 
+                        id="confirmPassword"
+                        className={styles.input}
+                        type="password"
+                        value={confirmPassword}
+                        placeholder="********"
+                        onChange={(e) => setConfirmPassword(e.target.value)} 
+                    />
 
-                {error && <p style={{color: 'red'}}>{error}</p>}
-                <button type="submit">Cadastrar</button>
-            </form>
-        </>
+                    {error && <p className={styles.errorText}>{error}</p>}
+                    <button className={styles.button} type="submit">Cadastrar</button>
+                </form>
+
+                <p className={styles.loginLink}>
+                    Já possui uma conta? <Link to="/login">Faça Login</Link>
+                </p>
+            </div>
+        </div>
     )
 }
 

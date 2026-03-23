@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import styles from "./CreateCourse.module.css";
 
 function CreateCourse() {
     const [title, setTitle] = useState('');
@@ -93,37 +94,78 @@ function CreateCourse() {
     }
 
     return (
-        <>
-            <form onSubmit={handleSubmit}>
-                <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} />
-                {teachers.length == 0 ? (
-                    <select value={teacher_id} onChange={(e) => setTeacher_ID(e.target.value)} required>
-                        <option value="">Nenhum</option>
-                    </select>
-                ) : (
-                    <select value={teacher_id} onChange={(e) => setTeacher_ID(e.target.value)} required>
-                        <option value="" disabled>Selecione um Professor...</option>
-                        {teachers.map((teacher) => (
-                            <option value={teacher.id}>{teacher.username}</option>
-                        ))}
-                    </select>
-                )}
-                {categories.length == 0 ? (
-                    <select value={category_id} onChange={(e) => setCategory_ID(e.target.value)} required>
-                        <option value="">Nenhum</option>
-                    </select>
-                ) : (
-                    <select value={category_id} onChange={(e) => setCategory_ID(e.target.value)} required>
-                        <option value="" disabled>Selecione um Categoria...</option>
-                        {categories.map((category) => (
-                            <option value={category.id}>{category.name}</option>
-                        ))}
-                    </select>
-                )}
-                <textarea value={description} onChange={(e) => setDescription(e.target.value)}></textarea>
-                <button type="submit">Enviar</button>
-            </form>
-        </>
+        <div className={styles.pageContainer}>
+            <div className={styles.formCard}>
+                <h1 className={styles.title}>Criar Novo Curso</h1>
+                <form onSubmit={handleSubmit}>
+                    <div className={styles.formGroup}>
+                        <label className={styles.label} htmlFor="title">Título do  Curso</label>
+                        <input 
+                            id="title"
+                            className={styles.inputField}
+                            type="text" 
+                            value={title} 
+                            placeholder="Título"
+                            onChange={(e) => setTitle(e.target.value)} 
+                            required
+                        />
+                    </div>
+                    <div className={styles.formGroup}>
+                        <label className={styles.label} htmlFor="teacher">Professor Responsável</label>
+                        <select 
+                            id="teacher"
+                            value={teacher_id} 
+                            className={styles.inputField}
+                            onChange={(e) => setTeacher_ID(e.target.value)} 
+                            required
+                        >
+                            {teachers.length == 0 ? (
+                                <option value="">Nenhum professor cadastrado</option>
+                            ) : (
+                                <>
+                                    <option value="" disabled>Selecione um Professor...</option>
+                                    {teachers.map((teacher) => (
+                                        <option value={teacher.id}>{teacher.username}</option>
+                                    ))}
+                                </>
+                            )}
+                        </select>
+                    </div>
+                    <div className={styles.formGroup}>
+                        <label className={styles.label} htmlFor="category">Categoria</label>
+                        <select 
+                            id="category"
+                            className={styles.inputField}
+                            value={category_id} 
+                            onChange={(e) => setCategory_ID(e.target.value)} 
+                            required
+                        >
+                            {categories.length === 0 ? (
+                                <option value="">Nenhuma categoria cadastrada</option>
+                            ) : (
+                                <>
+                                    <option value="" disabled>Selecione uma Categoria...</option>
+                                    {categories.map((category) => (
+                                        <option key={category.id} value={category.id}>{category.name}</option>
+                                    ))}
+                                </>
+                            )}
+                        </select>
+                    </div>
+                    <div className={styles.formGroup}>
+                        <label className={styles.label} htmlFor="description">Descrição do Curso</label>
+                        <textarea 
+                            id="description"
+                            className={`${styles.inputField} ${styles.textareaField}`}
+                            value={description} 
+                            onChange={(e) => setDescription(e.target.value)}
+                            placeholder="Descreva o que os alunos aprenderão nesse curso..."
+                        ></textarea>
+                    </div>
+                    <button className={styles.submitBtn} type="submit">Cadastrar</button>
+                </form>
+            </div>
+        </div>
     )
 };
 

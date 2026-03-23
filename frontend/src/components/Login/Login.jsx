@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import styles from "./Login.module.css";
 
 function Login(){
     const [email, setEmail] = useState('');
@@ -32,25 +33,33 @@ function Login(){
     }
 
     return (
-        <>
-            <h1>Tela de Login</h1>
-            <form onSubmit={testForm}>
-                <label htmlFor="">Email:</label>
-                <input 
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                />
-                <label htmlFor="">Password:</label>
-                <input 
-                    type="password" 
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)} 
-                />
+        <div className={styles.pageContainer}>
+            <div className={styles.loginCard}>
+                <h1 className={styles.title}>Tela de Login</h1>
+                <form onSubmit={testForm} className={styles.form}>
+                    <label className={styles.label} htmlFor="email">Email:</label>
+                    <input 
+                        id="email"
+                        type="email"
+                        value={email}
+                        className={styles.input}
+                        placeholder="seu@email.com"
+                        onChange={(e) => setEmail(e.target.value)}
+                    />
+                    <label className={styles.label} htmlFor="password">Password:</label>
+                    <input 
+                        id="password"
+                        className={styles.input}
+                        type="password" 
+                        value={password}
+                        placeholder="********"
+                        onChange={(e) => setPassword(e.target.value)} 
+                    />
 
-                <button type="submit">Entrar</button>
-            </form>
-        </>
+                    <button className={styles.button} type="submit">Entrar</button>
+                </form>
+            </div>
+        </div>
     )
 }
 

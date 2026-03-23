@@ -1,5 +1,7 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useState } from "react";
+import styles from "./AddVideo.module.css";
+import { ssrImportKey } from "vite/module-runner";
 
 function AddVideo() {
     const [ title, setTitle ] = useState('');
@@ -52,17 +54,34 @@ function AddVideo() {
     }
 
     return (
-        <>
-            <h2>Adicione um Video</h2>
-            <form onSubmit={handleSubmit}>
-                <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} required />
-                <textarea value={resume} onChange={(e) => setResume(e.target.value)}></textarea>
-                <input type="text" value={url} onChange={(e) => setUrl(e.target.value)} required />
+        <div className={styles.pageContainer}>
+            <div className={styles.formCard}>
+                <h1>Adicionar Nova Aula</h1>
+                <form className={styles.form} onSubmit={handleSubmit}>
+                    <div className={styles.formGroup}>
+                        <label className={styles.label} htmlFor="title">Título do Vídeo</label>
+                        <input 
+                            id="title"
+                            className={styles.inputField}
+                            type="text" 
+                            value={title} 
+                            onChange={(e) => setTitle(e.target.value)} 
+                            placeholder="Ex: Entendendo Variáveis"
+                            required 
+                        />
+                    </div>
+                    <div className={styles.formGroup}>
+                        <label className={styles.label} htmlFor="resume">Resumo</label>
 
-                {error && <p style={{ color: 'red' }}>{error}</p>}
-                <button type="submit">Adicionar</button>
-            </form>
-        </>
+                    </div>
+                    <textarea value={resume} onChange={(e) => setResume(e.target.value)}></textarea>
+                    <input type="text" value={url} onChange={(e) => setUrl(e.target.value)} required />
+
+                    {error && <p style={{ color: 'red' }}>{error}</p>}
+                    <button type="submit">Adicionar</button>
+                </form>
+            </div>
+        </div>
     )
 }
 

@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import styles from "./Plans.module.css";
 
 function Plans() {
     const currentPlan = localStorage.getItem("plan_type")
@@ -46,25 +47,35 @@ function Plans() {
     }
 
     return (
-        <>
-            <h2>Planos:</h2>
-            {plans.map((plan) => (
-                <div key={plan.db_value} style={{ display: 'flex', gap: '20px', marginTop: '10px' }}>
-                    <h3>{plan.name}</h3>
-                    <span>
-                        {plan.price}
-                    </span>
-                    {plan.benefit.map((benefit_plan, index) => (
-                        <p key={index}>{benefit_plan}</p>
-                    ))}
-                    {currentPlan != plan.db_value ? (
-                        <button style={{ padding: '5px', borderRadius: '5px', backgroundColor: 'blue', color: 'white', fontFamily: 'Arial, Helvetica, sans-serif' }} onClick={() => handleUpgrade(plan.db_value)} >Assinar</button>
-                    ) : (
-                        <button disabled>Assinado</button>
-                    )}
-                </div>
-            ))}
-        </>
+        <div className={styles.container}>
+            <h1 className={styles.title}>Escolha seu Plano</h1>
+            <div className={styles.cardsWrapper}>
+                {plans.map((plan) => (
+                    <div key={plan.db_value} className={styles.card}>
+                        <h3 className={styles.cardName}>{plan.name}</h3>
+                        <div  className={styles.cardPrice}>
+                            {plan.price}
+                        </div>
+                        <div className={styles.benefitsList}>
+                            {plan.benefit.map((benefit_plan, index) => (
+                                <p key={index} className={styles.benefitsItem} >
+                                    <span style={{ color: '#007bff' }}>✓</span> {benefit_plan}
+                                </p>
+                            ))}
+                        </div>
+                        {currentPlan != plan.db_value ? (
+                            <button className={styles.actionBtn} onClick={() => handleUpgrade(plan.db_value)}>
+                                Assinar {plan.name}
+                            </button>
+                        ) : (
+                            <button className={styles.disabledBtn} disabled>
+                                Seu plano atual
+                            </button>
+                        )}
+                    </div>
+                ))}
+            </div>
+        </div>
     )
 }
 

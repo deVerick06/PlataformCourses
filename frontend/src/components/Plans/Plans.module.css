@@ -1,0 +1,95 @@
+.container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 50px 20px;
+    text-align: center;
+}
+
+.title {
+    font-size: 32px;
+    color: #ffffff;
+    margin-bottom: 40px;
+}
+
+.cardsWrapper {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    flex-wrap: wrap;
+}
+
+.card {
+    background-color: #1e1e1e;
+    border: 1px solid #333;
+    border-radius: 12px;
+    padding: 40px 30px;
+    width: 320px; 
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    transition: transform 0.2s, border-color 0.2s;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    border-color: #007bff; 
+}
+
+.cardName {
+    font-size: 24px;
+    font-weight: bold;
+    color: #ffffff;
+    margin-bottom: 10px;
+}
+
+.cardPrice {
+    font-size: 36px;
+    font-weight: 900;
+    color: #007bff;
+    margin-bottom: 25px;
+}
+
+.benefitsList {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    flex-grow: 1;
+    margin-bottom: 30px;
+}
+
+.benefitItem {
+    font-size: 15px;
+    color: #cccccc;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.actionBtn {
+    width: 100%;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.actionBtn:hover {
+    background-color: #0056b3;
+}
+
+.disabledBtn {
+    width: 100%;
+    background-color: #333333;
+    color: #888888;
+    border: 1px solid #444;
+    padding: 12px;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: not-allowed;
+}

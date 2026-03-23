@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import styles from "./Home.module.css";
 
 function Home(){
     const [courses, setCourses] = useState([]);
@@ -35,27 +36,33 @@ function Home(){
     }
 
     return (
-        <>
-            <h1>Vitrini de Curso</h1>
-            {role === 'admin' && (<button onClick={() => goToAddCourse()}>Adicionar Curso</button>)}
+        <div className={styles.container}>
+            <div className={styles.header}>
+                <h1 className={styles.title}>Vitrine de Curso</h1>
+                {role === 'admin' && (
+                    <button className={styles.adminBtn} onClick={() => goToAddCourse()}>
+                        + Adicionar Curso
+                    </button>
+                )}
+            </div>
             {courses.length === 0 ? (
-                <p>Nenhum curso cadastrado ainda.</p>
+                <p className={styles.emptyMessage}>Nenhum curso cadastrado ainda.</p>
             ) : (
-                <div style={{ display: 'flex', gap: '20px', marginTop: '20px' }}>
+                <div className={styles.grid}>
                     {courses.map((course) => (
-                        <div key={course.id} style={{ border: '1px solid #ccc', padding: '15px' }}>
-                            <h3>{course.title}</h3>
-                            <span style={{ fontSize: '12px', color: 'gray' }}>
+                        <div key={course.id} className={styles.card}>
+                            <h3 className={styles.cardTitle}>{course.title}</h3>
+                            <span className={styles.cardCategory}>
                                 {course.category}
                             </span>
                             <br />
-                            <button onClick={() => pageDetails(course.id)}>Ver Aulas</button>
+                            <button className={styles.detailsBtn} onClick={() => pageDetails(course.id)}>Ver Detalhes</button>
                         </div>
                     ))}
 
                 </div>
             )}
-        </>
+        </div>
     )
 }
 
