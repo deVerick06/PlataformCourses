@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
+import styles from "./VideoPlayer.module.css"
 
 function VideoPlayer() {
     const { video_id } = useParams();
@@ -21,32 +22,38 @@ function VideoPlayer() {
             console.log(data); //DEBUG
         }
         getData()
-    }, []);
+    }, [video_id]);
 
     if (video == null) {
         return (
-            <p>Loading...</p>
+            <div className={styles.loadingState}>
+                Carregando a aula...
+            </div>
         )
     };
 
     return (
-        <>
-            <h2>Video</h2>
-            <div>
-                <h3>{video.title}</h3>
-                {video.resume == null ? (
-                    <p>Esse video não possui um resumo...</p>
-                ) : (
-                    <p>{video.resume}</p>
-                )}
+        <div className={styles.pageContainer}>
+            <div className={styles.videoWrapper}>
                 <iframe 
+                    className={styles.iframe}
                     src={video.url}
                     title={video.title}
-                    width="400px"
-                    height="250px"
+                    allowFullScreen 
                 />
             </div>
-        </>
+
+            <div className={styles.infoSection}>
+                <h1 className={styles.title}>{video.title}</h1>
+                
+                {video.resume == null || video.resume === "" ? (
+                    <p className={styles.emptyResume}>Esse vídeo não possui um resumo...</p>
+                ) : (
+                    <p className={styles.resumeText}>{video.resume}</p>
+                )}
+            </div>
+
+        </div>
     )
 }
 

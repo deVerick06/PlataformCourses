@@ -72,13 +72,29 @@ function AddVideo() {
                     </div>
                     <div className={styles.formGroup}>
                         <label className={styles.label} htmlFor="resume">Resumo</label>
+                        <textarea 
+                            id="resume"
+                            className={`${styles.inputField} ${styles.textareaField}`}
+                            value={resume} 
+                            onChange={(e) => setResume(e.target.value)}
+                            placeholder="Uma breve descrição do que será abordado..."
+                        ></textarea>
 
                     </div>
-                    <textarea value={resume} onChange={(e) => setResume(e.target.value)}></textarea>
-                    <input type="text" value={url} onChange={(e) => setUrl(e.target.value)} required />
+                    <div className={styles.formGroup}>
+                        <label className={styles.label} htmlFor="url">URL do Vídeo</label>
+                        <input 
+                            id="url"
+                            className={styles.inputField}
+                            type="text" 
+                            placeholder="Ex: https://www.youtube.com/watch?v=..."
+                            value={url} onChange={(e) => setUrl(e.target.value)} 
+                            required 
+                        />
+                    </div>
 
-                    {error && <p style={{ color: 'red' }}>{error}</p>}
-                    <button type="submit">Adicionar</button>
+                    {error && <p className={styles.errorText}>{error}</p>}
+                    <button className={styles.submitBtn} type="submit">Adicionar Vídeo</button>
                 </form>
             </div>
         </div>
